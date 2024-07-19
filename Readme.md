@@ -1,5 +1,6 @@
 README
 Overview
+
 This project is a web application built using Django and React. It includes functionalities for managing appointments between doctors and patients, with separate dashboards and calendar management features. This document provides an overview of the key features and functionality implemented in the project.
 
 Features
