@@ -52,9 +52,9 @@ function App() {
                     <Route path="/app/login" element={isLoggedIn ? null : <LoginForm />} />
                     <Route path="/app/blogpost" element={isLoggedIn ? <BlogForm /> : <Navigate to="/app/login" />} />
                     <Route path="/app/categories" element={isLoggedIn ? <CategoryForm /> : <Navigate to="/app/login" />} />
-                    <Route path="/app/blogosphere" element={<BlogList />} />
+                    <Route path="/app/blogosphere" element={ isLoggedIn ? <BlogList /> : <Navigate to="/app/login" />} />
                     {userType === 'patient' && <Route path="/app/patient_dashboard" element={<Dashboard />} />}
-                    {userType === 'doctor' && <Route path="/app/myappointments" element={<ConfirmedAppointments />} />}
+                    {userType === 'patient' && <Route path="/app/myappointments" element={<ConfirmedAppointments />} />}
                     <Route path="/app/blogs_by_category/:category_id" element={<BlogsByCategory />} />
                    
                    

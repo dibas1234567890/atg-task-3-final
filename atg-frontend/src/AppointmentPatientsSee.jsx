@@ -36,30 +36,44 @@ const ConfirmedAppointments = () => {
             {!loading && appointments.length === 0 ? (
                 <p>No confirmed appointments.</p>
             ) : (
-               <div className="accordion">
-                <div className="accordion-item">
-                    <div className="accordion-header">
-                        <button className='accordion-button' type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"> 
-                      
-                        </button>
-                    </div>
-                    <div className="accordion-body">
-                    <ul className="list-group">
+                <div className="accordion">
                     {appointments.map((appointment) => (
-                        <li key={appointment.id} className="list-group-item">
-                                        <h3>
-                                        Specialty:                                         
-                                        <small class="text-muted">{appointment.speciality}</small>
-                                        </h3>                            
-                                        <p>Date: {appointment.date}</p>
-                            <p>Start Time: {appointment.start_time}</p>
-                            <p>End Time: {appointment.end_time || 'Not specified'}</p>
-                        </li>
+                        <div key={appointment.id} className="accordion-item">
+                            <h2 className="accordion-header" id={`heading-${appointment.id}`}>
+                                <button 
+                                    className="accordion-button" 
+                                    type="button" 
+                                    data-bs-toggle="collapse" 
+                                    data-bs-target={`#collapse-${appointment.id}`} 
+                                    aria-expanded="true" 
+                                    aria-controls={`collapse-${appointment.id}`}
+                                >
+                                    Appointment on {appointment.date}
+                                </button>
+                            </h2>
+                            <div 
+                                id={`collapse-${appointment.id}`} 
+                                className="accordion-collapse collapse show" 
+                                aria-labelledby={`heading-${appointment.id}`}
+                            >
+                                <div className="accordion-body">
+                                    <ul className="list-group">
+                                        <li className="list-group-item">
+                                            <h3>
+                                                Specialty: 
+                                                <small className="text-muted">{appointment.speciality}</small>
+                                            </h3>
+                                            <p>Date: {appointment.date}</p>
+                                            <p>Start Time: {appointment.start_time}</p>
+                                            <p>End Time: {appointment.end_time || 'Not specified'}</p>
+                                            <p>Doctor: <strong>{appointment.doctor_name}</strong></p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     ))}
-                </ul>
-                    </div>
                 </div>
-               </div>
             )}
         </div>
     );

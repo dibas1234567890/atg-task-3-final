@@ -26,8 +26,4 @@ from login_system.views import ReactAppView
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('api/', include('login_system.urls'), name="login"), 
-    re_path(r'^.*$', ReactAppView.as_view(), name='react_app'),
-]
-
-urlpatterns += staticfiles_urlpatterns()
-
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

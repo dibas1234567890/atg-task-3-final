@@ -95,6 +95,13 @@ class UserSerailizer(serializers.ModelSerializer):
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
+    doctor_name = serializers.SerializerMethodField()
+
+    
     class Meta:
         model = Appointment
-        fields = ['id', 'speciality', 'date', 'start_time', 'end_time']
+        fields = ['id', 'speciality', 'date', 'start_time', 'end_time', 'doctor_name']
+
+    def get_doctor_name(self, obj):
+        # Accessing the doctor's full name through the related CustomerUserProfile
+        return f"{obj.doctor.first_name} {obj.doctor.last_name}"
