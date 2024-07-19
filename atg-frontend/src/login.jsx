@@ -33,7 +33,7 @@ const LoginForm = () => {
             localStorage.setItem('refresh_token', data.refresh);
             axios.defaults.headers.common['Authorization'] = `Bearer ${data.access}`;
 
-            navigate("/api/blogosphere"); 
+            navigate("/app/blogosphere"); 
             window.location.reload()        
         } catch (error) {
             setError("Invalid username or password");

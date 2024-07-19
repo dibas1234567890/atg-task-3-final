@@ -54,8 +54,7 @@ const AppointmentForm = ({ doctorId, onClose }) => {
         try {
             const response = await axios.post(`http://127.0.0.1:8000/api/fetch-available-slots/${doctorId}`, {
                 summary: formData.speciality,
-                start_time: formData.start_time,
-                end_time: formData.start_time, 
+                start_time: `${formData.date}T${formData.start_time}:00`,
                 doctor: formData.doctor,
             }, {
                 headers: {
@@ -70,12 +69,12 @@ const AppointmentForm = ({ doctorId, onClose }) => {
                 date: '',
                 start_time: '',
             });
-            navigate('/api/myappointments');
+            navigate('/app/myappointments');
         } catch (error) {
             setError('Failed to book appointment');
         }
     };
-
+    
 
     return (
         <div className="container">

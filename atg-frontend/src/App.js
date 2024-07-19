@@ -16,6 +16,7 @@ import ConfirmedAppointments from './AppointmentPatientsSee';
 function App() {
     const [userType, setUserType] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const token = localStorage.getItem('access_token');
@@ -24,8 +25,10 @@ function App() {
         const fetchUserType = async () => {
             if (token) {
                 const type = await getUserType();
+                console.log(type);
                 setUserType(type);
             }
+            setIsLoading(false);
         };
 
         fetchUserType();
@@ -35,25 +38,26 @@ function App() {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         setIsLoggedIn(false);
-        window.location.href = '/api/login';
+        setUserType(null);
+        return (<Navigate to ='/app/login'/>)
     };
 
- 
 
     return (
         <div className="App">
             <BrowserRouter>
                 <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} userType={userType} />
                 <Routes>
-                    <Route path="/api/register" element={<RegisterForm />} />
-                    <Route path="/api/login" element={<LoginForm />} />
-                    <Route path="/api/blogpost" element={isLoggedIn ? <BlogForm /> : <Navigate to="/api/login" />} />
-                    <Route path="/api/categories" element={isLoggedIn ? <CategoryForm /> : <Navigate to="/api/login" />} />
-                    <Route path="/api/blogosphere" element={<BlogList />} />
-                    {userType === 'patient' && <Route path="/api/patient_dashboard" element={<Dashboard />} />}
-                    {/* {userType === 'doctor' && <Route path="/api/appointments" element={<Appointments />} />} */}
-                    <Route path="/api/blogs_by_category/:category_id" element={<BlogsByCategory />} />
-                    <Route path='/api/myappointments' element = {<ConfirmedAppointments/>} />
+                    <Route path="/app/register" element={<RegisterForm />} />
+                    <Route path="/app/login" element={isLoggedIn ? null : <LoginForm />} />
+                    <Route path="/app/blogpost" element={isLoggedIn ? <BlogForm /> : <Navigate to="/app/login" />} />
+                    <Route path="/app/categories" element={isLoggedIn ? <CategoryForm /> : <Navigate to="/app/login" />} />
+                    <Route path="/app/blogosphere" element={<BlogList />} />
+                    {userType === 'patient' && <Route path="/app/patient_dashboard" element={<Dashboard />} />}
+                    {userType === 'doctor' && <Route path="/app/myappointments" element={<ConfirmedAppointments />} />}
+                    <Route path="/app/blogs_by_category/:category_id" element={<BlogsByCategory />} />
+                   
+                   
                 </Routes>
             </BrowserRouter>
         </div>

@@ -1,6 +1,9 @@
+import os
+from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render, HttpResponseRedirect
 from django.urls import reverse
+from django.views import View
 import requests
 from rest_framework import status
 from rest_framework.response import Response
@@ -430,4 +433,20 @@ class CancelAppointmentView(APIView):
             return Response({'message': 'Appointment cancelled successfully'}, status=204)
         except Appointment.DoesNotExist:
             return Response({'error': 'Appointment not found'}, status=404)
+        
+        
+class ReactAppView(View):
 
+    def get(self, request):
+        try:
+
+            with open(os.path.join(settings.REACT_APP, 'build', 'index.html')) as file:
+                return HttpResponse(file.read())
+
+        except :
+            return HttpResponse(
+                """
+                index.html not found ! build your React app !!
+                """,
+                status=501,
+            )

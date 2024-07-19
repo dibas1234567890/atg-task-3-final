@@ -14,33 +14,33 @@ const Navbar = ({ isLoggedIn, handleLogout, userType }) => {
                         {!isLoggedIn && (
                             <>
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/api/register">Register</Link>
+                                    <Link className="nav-link" to="/app/register">Register</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/api/login">Login</Link>
+                                    <Link className="nav-link" to="/app/login">Login</Link>
                                 </li>
                             </>
                         )}
                         {isLoggedIn && (
                             <>
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/api/blogpost">Create Blog Post</Link>
+                                    <Link className="nav-link" to="/app/blogpost">Create Blog Post</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/api/categories">Categories</Link>
+                                    <Link className="nav-link" to="/app/categories">Categories</Link>
                                 </li>
                                 {userType === 'patient' && (
                                     <li className="nav-item">
-                                        <Link className="nav-link" to="/api/patient_dashboard">Dashboard only shown for patients</Link>
+                                        <Link className="nav-link" to="/app/patient_dashboard">Patient Dashboard</Link>
                                     </li>
                                 )}
                                 {userType === 'doctor' && (
                                     <li className="nav-item">
-                                        <Link className="nav-link" to="/api/appointments">Appointments only shown for docs </Link>
+                                        <Link className="nav-link" to="/app/appointments">Doctor Appointments</Link>
                                     </li>
                                 )}
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/api/blogosphere">Blog List</Link>
+                                    <Link className="nav-link" to="/app/blogosphere">Blog List</Link>
                                 </li>
                                 <li className="nav-item">
                                     <button className="nav-link btn btn-link" onClick={handleLogout}>Logout</button>

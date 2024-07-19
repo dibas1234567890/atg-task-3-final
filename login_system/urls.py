@@ -1,5 +1,5 @@
-from django.urls import path
-from login_system.views import  AvailableTimesView, ConfirmedAppointmentsView,  GetUserObjView
+from django.urls import path, re_path
+from login_system.views import  AvailableTimesView, ConfirmedAppointmentsView,  GetUserObjView, ReactAppView
 from login_system.views import (
     BlogView,
     BlogsByCategory,
@@ -20,7 +20,6 @@ from django.conf.urls.static import static
 app_name = 'home'
 
 urlpatterns = [
-    path('', IndexView.as_view(), name='home'),
     path('register', CustomRegisterView.as_view(), name='register'),
     path('login', CustomLoginView.as_view(), name='login'),
     path('patient_dashboard', PatientDashboardView.as_view(), name='patient_dashboard'),
@@ -47,7 +46,9 @@ urlpatterns = [
     path('save-event', AvailableTimesView.as_view(), 
          name='save_event'),
      path('myappointments', ConfirmedAppointmentsView.as_view(), name='myappointments'),
-     # path('available-dates', AvailableSlotsView.as_view(), name='available-dates')
+     # path('available-dates', AvailableSlotsView.as_view(), name='available-dates'),
+
+    
 
 
 ] 
