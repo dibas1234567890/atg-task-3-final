@@ -62,15 +62,14 @@ class Event(models.Model):
 class Appointment(models.Model):
     doctor = models.ForeignKey(CustomerUserProfile, on_delete=models.CASCADE)
     speciality = models.CharField(max_length=100)
-    date = models.DateField()
-    start_time = models.TimeField()
+    date = models.CharField(max_length=256)
+    start_time = models.CharField(max_length=256)
+    end_time = models.CharField(max_length=256, null=True, blank=True)
+    patient = models.ForeignKey(CustomerUserProfile, blank=True, null=True, 
+                                on_delete=models.CASCADE, related_name='patient_appointment')
 
-    def save(self, *args, **kwargs):
-        if self.start_time:
-            start = timezone.datetime.combine(self.date, self.start_time)
-            end = start + timezone.timedelta(minutes=45)
-            self.end_time = end.time()
-        super().save(*args, **kwargs)
+
+    
 
     def __str__(self):
         return f"Appointment with Dr. {self.doctor} on {self.date} at {self.start_time}"
@@ -79,6 +78,7 @@ class CalendarModel(models.Model):
     calendar_id = models.CharField(max_length=255, unique=True)
     summary = models.CharField(max_length=255)
     timezone = models.CharField(max_length=50, default='Asia/Kolkata')
+    patient = models.ForeignKey(CustomerUserProfile, blank=True, null=True, on_delete=models.CASCADE, related_name='patient')
 
     
 

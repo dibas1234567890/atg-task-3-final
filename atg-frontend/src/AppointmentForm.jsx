@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AppointmentForm = ({ doctorId, onClose }) => {
     const [formData, setFormData] = useState({
@@ -10,6 +11,35 @@ const AppointmentForm = ({ doctorId, onClose }) => {
     });
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
+    const [availableDates, setAvailableDates] = useState({});
+    const [timeSlots, setTimeSlots] = useState([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchAvailableDates = async () => {
+            const token = localStorage.getItem('access_token');
+            try {
+                const response = await axios.get(`http://127.0.0.1:8000/api/fetch-available-slots/${doctorId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                });
+                setAvailableDates(response.data.available_dates);
+            } catch (error) {
+                setError('Failed to fetch available dates');
+            }
+        };
+
+        fetchAvailableDates();
+    }, [doctorId]);
+
+    useEffect(() => {
+        if (formData.date && availableDates[formData.date]) {
+            setTimeSlots(availableDates[formData.date]);
+        } else {
+            setTimeSlots([]);
+        }
+    }, [formData.date, availableDates]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -22,7 +52,12 @@ const AppointmentForm = ({ doctorId, onClose }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/appointments', formData, {
+            const response = await axios.post(`http://127.0.0.1:8000/api/fetch-available-slots/${doctorId}`, {
+                summary: formData.speciality,
+                start_time: formData.start_time,
+                end_time: formData.start_time, 
+                doctor: formData.doctor,
+            }, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('access_token')}`
@@ -35,10 +70,12 @@ const AppointmentForm = ({ doctorId, onClose }) => {
                 date: '',
                 start_time: '',
             });
+            navigate('/api/myappointments');
         } catch (error) {
             setError('Failed to book appointment');
         }
     };
+
 
     return (
         <div className="container">
@@ -58,35 +95,47 @@ const AppointmentForm = ({ doctorId, onClose }) => {
                         required
                     />
                 </div>
+
                 <div className="form-group">
                     <label htmlFor="date">Date</label>
-                    <input
+                    <select
                         id="date"
                         name="date"
-                        type="date"
                         className="form-control"
                         value={formData.date}
                         onChange={handleChange}
                         required
-                    />
+                    >
+                        <option value="">Select a date</option>
+                        {Object.keys(availableDates).map(date => (
+                            <option key={date} value={date}>{date}</option>
+                        ))}
+                    </select>
                 </div>
+
                 <div className="form-group">
                     <label htmlFor="start_time">Start Time</label>
-                    <input
+                    <select
                         id="start_time"
                         name="start_time"
-                        type="time"
                         className="form-control"
                         value={formData.start_time}
                         onChange={handleChange}
                         required
-                    />
+                    >
+                        <option value="">Select a time</option>
+                        {timeSlots.map(slot => (
+                            <option key={slot.start_time} value={slot.start_time}>
+                                {slot.start_time} - {slot.end_time}
+                            </option>
+                        ))}
+                    </select>
                 </div>
+
                 <div className="mt-2">
-                <button type="submit" className="btn mx-2  btn-primary">Confirm</button>
-                <button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button>
+                    <button type="submit" className="btn mx-2 btn-primary">Confirm</button>
+                    <button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button>
                 </div>
-                
             </form>
         </div>
     );

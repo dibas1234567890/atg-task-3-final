@@ -25,7 +25,7 @@ const BlogList = () => {
                     fetchCategoryData(blog.category);
                 });
             } catch (error) {
-                setError(`Error fetching blogs ${error.message}`); 
+                setError(`Error fetching blogs ${error.message} - No Blogs In Database, Currently`); 
             }
         };
         fetchUserBlogs(); 

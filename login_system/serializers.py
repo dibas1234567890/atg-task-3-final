@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from login_system.models import BlogModel, CustomerUserProfile
 User = get_user_model()
 from rest_framework import serializers
-from .models import Category, CustomerUserProfile
+from .models import Appointment, Category, CustomerUserProfile
 
 
 
@@ -92,4 +92,9 @@ class UserSerailizer(serializers.ModelSerializer):
     class Meta: 
         model = CustomerUserProfile
         fields = "__all__"
-        
+
+
+class AppointmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Appointment
+        fields = ['id', 'speciality', 'date', 'start_time', 'end_time']

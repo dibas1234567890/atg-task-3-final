@@ -1,4 +1,5 @@
 from django.urls import path
+from login_system.views import  AvailableTimesView, ConfirmedAppointmentsView,  GetUserObjView
 from login_system.views import (
     BlogView,
     BlogsByCategory,
@@ -11,8 +12,6 @@ from login_system.views import (
     IndexView,
     UserView,
     csrf_token_view,
-    fetch_events,
-    get_available_times
 )
 from rest_framework_simplejwt import views as jwt_views
 
@@ -40,7 +39,15 @@ urlpatterns = [
           name ='token_refresh'),
               path('csrf_token', csrf_token_view, name=''),
 
-    path('fetch-events/', fetch_events, name='fetch_events'), 
-    path('fetch-available-slots', get_available_times, name = 'get_available_times')
+    # path('fetch-events/', CalendarView.fetch_events, name='fetch_events'), 
+    path('user-obj', GetUserObjView.as_view(), name='get_user_obj'),
+
+    path('fetch-available-slots/<int:doctor_id>', AvailableTimesView.as_view(), 
+         name='get_available_times'), 
+    path('save-event', AvailableTimesView.as_view(), 
+         name='save_event'),
+     path('myappointments', ConfirmedAppointmentsView.as_view(), name='myappointments'),
+     # path('available-dates', AvailableSlotsView.as_view(), name='available-dates')
+
 
 ] 

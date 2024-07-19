@@ -9,19 +9,17 @@ from login_system.models import CalendarModel, CustomerUserProfile
 SCOPES_F = ['https://www.googleapis.com/auth/calendar']
 
 def get_google_calendar_service():
-    """Initialize and return the Google Calendar API service."""
     credentials = Credentials.from_authorized_user_file('token.json', SCOPES_F)
     return build('calendar', 'v3', credentials=credentials)
 
 @receiver(post_save, sender=CustomerUserProfile)
 def create_calendar_for_doctor(sender, instance, **kwargs):
-    """Create a calendar for a doctor when a CustomerUserProfile is saved."""
     if instance.user_type == 'doctor' and not instance.calendar_id:
         service = get_google_calendar_service()
         
         calendar = {
-            'summary': f'{instance.first_name} {instance.last_name} Calendar',
-            'timeZone': 'Asia/Kolkata'
+            'summary': f' {instance.username} {instance.first_name} {instance.last_name}  Calendar',
+            'timeZone': 'Asia/Kathmandu'
         }
 
         created_calendar = service.calendars().insert(body=calendar).execute()

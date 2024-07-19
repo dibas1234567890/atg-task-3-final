@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Navbar = ({ isLoggedIn, handleLogout }) => {
+const Navbar = ({ isLoggedIn, handleLogout, userType }) => {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
@@ -29,9 +29,16 @@ const Navbar = ({ isLoggedIn, handleLogout }) => {
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/api/categories">Categories</Link>
                                 </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/api/patient_dashboard">Dashboard</Link>
-                                </li>
+                                {userType === 'patient' && (
+                                    <li className="nav-item">
+                                        <Link className="nav-link" to="/api/patient_dashboard">Dashboard only shown for patients</Link>
+                                    </li>
+                                )}
+                                {userType === 'doctor' && (
+                                    <li className="nav-item">
+                                        <Link className="nav-link" to="/api/appointments">Appointments only shown for docs </Link>
+                                    </li>
+                                )}
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/api/blogosphere">Blog List</Link>
                                 </li>
